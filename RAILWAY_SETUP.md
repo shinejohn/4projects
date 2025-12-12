@@ -108,17 +108,17 @@ railway variables --set "REVERB_APP_ID=4projects"
 # Generate Reverb keys (run locally):
 # php artisan reverb:install
 # Then set the generated keys:
-railway variables --set "REVERB_APP_KEY=your-generated-key
-railway variables --set "REVERB_APP_SECRET=your-generated-secret
+railway variables --set "REVERB_APP_KEY=your-generated-key""
+railway variables --set "REVERB_APP_SECRET=your-generated-secret""
 railway variables --set "REVERB_SCHEME=https"
-railway variables --set "REVERB_HOST=your-app.railway.app
+railway variables --set "REVERB_HOST=your-app.railway.app""
 railway variables --set "REVERB_PORT=443"
 ```
 
 ### OpenRouter AI
 
 ```bash
-railway variables --set "OPENROUTER_API_KEY=your-openrouter-api-key
+railway variables --set "OPENROUTER_API_KEY=your-openrouter-api-key""
 railway variables --set "OPENROUTER_BASE_URL=https://openrouter.ai/api/v1"
 railway variables --set "OPENROUTER_DEFAULT_MODEL=anthropic/claude-3.5-sonnet"
 ```
@@ -126,8 +126,8 @@ railway variables --set "OPENROUTER_DEFAULT_MODEL=anthropic/claude-3.5-sonnet"
 ### Twilio (Optional - for SMS/Voice)
 
 ```bash
-railway variables --set "TWILIO_SID=your-twilio-sid
-railway variables --set "TWILIO_TOKEN=your-twilio-token
+railway variables --set "TWILIO_SID=your-twilio-sid""
+railway variables --set "TWILIO_TOKEN=your-twilio-token""
 railway variables --set "TWILIO_PHONE=+15551234567"
 ```
 
@@ -135,17 +135,17 @@ railway variables --set "TWILIO_PHONE=+15551234567"
 
 ```bash
 railway variables --set "SLACK_BOT_TOKEN=xoxb-your-slack-bot-token"
-railway variables --set "SLACK_SIGNING_SECRET=your-signing-secret
+railway variables --set "SLACK_SIGNING_SECRET=your-signing-secret"
 ```
 
 ### Mail Configuration
-
-```bash
-railway variables --set "MAIL_MAILER=smtp
+"
+```bash"
+railway variables --set "MAIL_MAILER=smtp"
 railway variables --set "MAIL_HOST=smtp.example.com"
 railway variables --set "MAIL_PORT=587"
-railway variables --set "MAIL_USERNAME=your-email@example.com
-railway variables --set "MAIL_PASSWORD=your-password
+railway variables --set "MAIL_USERNAME=your-email@example.com""
+railway variables --set "MAIL_PASSWORD=your-password""
 railway variables --set "MAIL_ENCRYPTION=tls"
 railway variables --set "MAIL_FROM_ADDRESS="tasks@4projects.ai"
 ```
@@ -340,4 +340,5 @@ Railway automatically deploys when you push to your connected GitHub branch. Con
 - Monitor Horizon: Access `/horizon` route (configured in HorizonServiceProvider)
 - Health checks: Railway monitors `/api/health` endpoint
 - Metrics: Available in Railway dashboard
-
+"
+"
