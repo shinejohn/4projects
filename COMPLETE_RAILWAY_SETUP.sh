@@ -105,3 +105,4 @@ echo "3. Run migrations: railway run php artisan migrate --force"
 echo ""
 echo "📖 See RAILWAY_SETUP.md for complete documentation"
 
+

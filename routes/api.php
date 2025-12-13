@@ -92,3 +92,4 @@ Route::prefix('webhooks')->group(function () {
     Route::post('/slack', [WebhookController::class, 'slack']);
 });
 
+

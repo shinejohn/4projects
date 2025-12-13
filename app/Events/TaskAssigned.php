@@ -35,3 +35,4 @@ class TaskAssigned implements ShouldBroadcast
     }
 }
 
+

@@ -29,3 +29,4 @@ class QuestionVote extends Model
     }
 }
 
+

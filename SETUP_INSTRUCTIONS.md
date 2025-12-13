@@ -231,3 +231,4 @@ $user = App\Models\User::create([
 5. Customize organization settings
 6. Add team members to projects
 
+
