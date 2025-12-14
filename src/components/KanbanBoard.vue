@@ -37,10 +37,11 @@ const columns = [
 const tasksByState = computed(() => {
   const grouped: Record<string, Task[]> = {}
   for (const task of props.tasks) {
-    if (!grouped[task.state]) {
-      grouped[task.state] = []
+    const state = task.state || 'pending'
+    if (!grouped[state]) {
+      grouped[state] = []
     }
-    grouped[task.state].push(task)
+    grouped[state].push(task)
   }
   return grouped
 })

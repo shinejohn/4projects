@@ -94,14 +94,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useTasksStore } from '@/stores/tasks'
 import { useProjectsStore } from '@/stores/projects'
 import KanbanBoard from '@/components/KanbanBoard.vue'
 import type { Task } from '@/api/tasks'
 
 const route = useRoute()
-const router = useRouter()
 const tasksStore = useTasksStore()
 const projectsStore = useProjectsStore()
 
