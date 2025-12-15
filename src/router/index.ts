@@ -4,6 +4,11 @@ import { useAuthStore } from '@/stores/auth'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('@/pages/HomePage.vue'),
+    },
     { 
       path: '/login', 
       name: 'login', 
@@ -17,13 +22,13 @@ const router = createRouter({
       meta: { guest: true } 
     },
     {
-      path: '/',
+      path: '/app',
       component: () => import('@/layouts/AppLayout.vue'),
       meta: { auth: true },
       children: [
         { 
           path: '', 
-          redirect: '/projects' 
+          redirect: '/app/projects' 
         },
         { 
           path: 'projects', 
@@ -69,7 +74,7 @@ router.beforeEach(async (to, _from, next) => {
   if (to.meta.auth && !authStore.isAuthenticated) {
     next('/login')
   } else if (to.meta.guest && authStore.isAuthenticated) {
-    next('/projects')
+    next('/app/projects')
   } else {
     next()
   }
