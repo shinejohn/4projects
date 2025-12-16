@@ -82,12 +82,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 import Button from '@/components/ui/Button.vue'
-
-const router = useRouter()
-const authStore = useAuthStore()
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
