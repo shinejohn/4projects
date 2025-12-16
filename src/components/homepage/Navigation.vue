@@ -104,14 +104,6 @@ const handleScroll = () => {
   isScrolled.value = window.scrollY > 20
 }
 
-const handleGetStarted = () => {
-  if (authStore.isAuthenticated) {
-    router.push('/projects/new')
-  } else {
-    router.push('/register')
-  }
-}
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
 })
