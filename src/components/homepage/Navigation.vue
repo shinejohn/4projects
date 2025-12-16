@@ -29,9 +29,51 @@
             to="/login"
             class="text-sm text-slate-600 hover:text-slate-900 transition-colors"
           >
-            Sign In
+            Login
           </router-link>
-          <Button size="sm" @click="handleGetStarted">Start Free</Button>
+          <router-link to="/register">
+            <Button size="sm">Sign Up</Button>
+          </router-link>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button
+          class="md:hidden text-slate-600"
+          @click="isMobileMenuOpen = !isMobileMenuOpen"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path v-if="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Mobile menu -->
+      <div v-if="isMobileMenuOpen" class="md:hidden bg-white border-t border-slate-200">
+        <div class="px-6 py-4 space-y-4">
+          <a
+            v-for="link in navLinks"
+            :key="link.name"
+            :href="link.href"
+            class="block text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            @click="isMobileMenuOpen = false"
+          >
+            {{ link.name }}
+          </a>
+          <router-link
+            to="/login"
+            class="block text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            @click="isMobileMenuOpen = false"
+          >
+            Login
+          </router-link>
+          <router-link
+            to="/register"
+            class="block"
+            @click="isMobileMenuOpen = false"
+          >
+            <Button size="sm" class="w-full">Sign Up</Button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -48,6 +90,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 const isScrolled = ref(false)
+const isMobileMenuOpen = ref(false)
 
 const navLinks = [
   { name: 'Product', href: '#product' },
