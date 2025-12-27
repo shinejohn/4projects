@@ -18,16 +18,33 @@ class Task extends Model
 
     protected $fillable = [
         'organization_id',
-        'project_id',
+        'project_id', // Now nullable for standalone tasks
         'requestor_id',
         'owner_id',
         'parent_id',
+        'team_id',
+        'team_member_id',
+        'marketplace_vendor_id',
+        'marketplace_listing_id',
+        'routing_rule_id',
+        'source_channel_id',
+        'source_channel_ref',
         'title',
         'description',
         'state',
         'source_channel',
         'source_metadata',
         'priority',
+        'color_state',
+        'contact_name',
+        'contact_phone',
+        'contact_email',
+        'location_address',
+        'location_unit',
+        'location_city',
+        'location_state',
+        'location_zip',
+        'location_coords',
         'due_date',
         'started_at',
         'completed_at',
@@ -40,6 +57,9 @@ class Task extends Model
         'extracted_entities',
         'tags',
         'custom_fields',
+        'deliverables',
+        'invite_code',
+        'invite_expires_at',
         'position',
     ];
 
@@ -52,9 +72,12 @@ class Task extends Model
         'extracted_entities' => 'array',
         'tags' => 'array',
         'custom_fields' => 'array',
+        'deliverables' => 'array',
+        'location_coords' => 'array',
         'due_date' => 'datetime',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
+        'invite_expires_at' => 'datetime',
         'overdue_risk_score' => 'decimal:2',
         'actual_hours' => 'decimal:2',
     ];
@@ -71,6 +94,21 @@ class Task extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function routingRule(): BelongsTo
+    {
+        return $this->belongsTo(RoutingRule::class);
+    }
+
+    public function sourceChannel(): BelongsTo
+    {
+        return $this->belongsTo(AssistantChannel::class, 'source_channel_id');
     }
 
     public function requestor(): BelongsTo

@@ -235,6 +235,128 @@ class TaskController extends Controller
 
         return new TaskCollection(TaskResource::collection($tasks));
     }
+
+    // Standalone tasks (not tied to a project)
+    public function indexStandalone(Request $request): TaskCollection
+    {
+        $query = Task::where('organization_id', $request->user()->organization_id)
+            ->whereNull('project_id')
+            ->with(['requestor', 'owner', 'team', 'routingRule']);
+
+        // Filters
+        if ($request->has('state')) {
+            $query->where('state', $request->state);
+        }
+        if ($request->has('priority')) {
+            $query->where('priority', $request->priority);
+        }
+        if ($request->has('owner_id')) {
+            $query->where('owner_id', $request->owner_id);
+        }
+        if ($request->has('team_id')) {
+            $query->where('team_id', $request->team_id);
+        }
+        if ($request->boolean('overdue')) {
+            $query->overdue();
+        }
+
+        // Search
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'ilike', "%{$request->search}%")
+                  ->orWhere('description', 'ilike', "%{$request->search}%");
+            });
+        }
+
+        // Sort
+        $sortField = $request->get('sort', 'created_at');
+        $sortDir = $request->get('direction', 'desc');
+        $query->orderBy($sortField, $sortDir);
+
+        $tasks = $query->paginate($request->get('per_page', 50));
+
+        return new TaskCollection(TaskResource::collection($tasks));
+    }
+
+    public function storeStandalone(CreateTaskRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        // Validate that source_channel is provided for standalone tasks
+        if (!isset($validated['source_channel'])) {
+            return response()->json([
+                'message' => 'source_channel is required for standalone tasks',
+            ], 422);
+        }
+
+        $task = $this->taskJuggler->createTask(
+            array_merge($validated, [
+                'organization_id' => $request->user()->organization_id,
+                'project_id' => null, // Standalone task
+            ]),
+            \App\Enums\TaskChannel::from($validated['source_channel']),
+            $request->user()
+        );
+
+        return response()->json([
+            'data' => new TaskResource($task),
+        ], 201);
+    }
+
+    public function showStandalone(Task $task): JsonResponse
+    {
+        // Check organization access
+        if ($task->organization_id !== request()->user()->organization_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Verify it's a standalone task
+        if ($task->project_id !== null) {
+            abort(404, 'Task not found');
+        }
+
+        $task->load(['requestor', 'owner', 'team', 'routingRule', 'sourceChannel', 'actions.user', 'messages.user']);
+
+        return response()->json([
+            'data' => new TaskResource($task),
+        ]);
+    }
+
+    public function updateStandalone(UpdateTaskRequest $request, Task $task): JsonResponse
+    {
+        // Check organization access
+        if ($task->organization_id !== request()->user()->organization_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Verify it's a standalone task
+        if ($task->project_id !== null) {
+            abort(404, 'Task not found');
+        }
+
+        $task = $this->taskJuggler->updateTask($task, $request->validated(), $request->user());
+
+        return response()->json([
+            'data' => new TaskResource($task),
+        ]);
+    }
+
+    public function destroyStandalone(Task $task): JsonResponse
+    {
+        // Check organization access
+        if ($task->organization_id !== request()->user()->organization_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Verify it's a standalone task
+        if ($task->project_id !== null) {
+            abort(404, 'Task not found');
+        }
+
+        $task->delete();
+
+        return response()->json(null, 204);
+    }
 }
 
 
