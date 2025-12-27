@@ -22,6 +22,15 @@ class CreateTaskRequest extends FormRequest
             'due_date' => ['nullable', 'date'],
             'estimated_hours' => ['nullable', 'integer', 'min:0'],
             'tags' => ['nullable', 'array'],
+            'source_channel' => ['nullable', 'string', 'in:web,mobile,email,sms,voice,slack'],
+            'team_id' => ['nullable', 'uuid', 'exists:teams,id'],
+            'contact_name' => ['nullable', 'string', 'max:255'],
+            'contact_phone' => ['nullable', 'string', 'max:20'],
+            'contact_email' => ['nullable', 'email', 'max:255'],
+            'location_address' => ['nullable', 'string', 'max:500'],
+            'location_city' => ['nullable', 'string', 'max:100'],
+            'location_state' => ['nullable', 'string', 'max:50'],
+            'location_zip' => ['nullable', 'string', 'max:20'],
         ];
     }
 }

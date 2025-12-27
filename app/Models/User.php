@@ -89,6 +89,49 @@ class User extends Authenticatable
         return $this->hasMany(Answer::class, 'author_id');
     }
 
+    // New relationships from taskjuggler-api
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_members')
+            ->withPivot('is_admin', 'joined_at')
+            ->withTimestamps();
+    }
+
+    public function inboxItems(): HasMany
+    {
+        return $this->hasMany(InboxItem::class);
+    }
+
+    public function routingRules(): HasMany
+    {
+        return $this->hasMany(RoutingRule::class);
+    }
+
+    public function contactLists(): HasMany
+    {
+        return $this->hasMany(ContactList::class);
+    }
+
+    public function assistantChannels(): HasMany
+    {
+        return $this->hasMany(AssistantChannel::class);
+    }
+
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(DirectMessage::class, 'sender_id');
+    }
+
+    public function receivedMessages(): HasMany
+    {
+        return $this->hasMany(DirectMessage::class, 'recipient_id');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     // Scopes
     public function scopeInOrganization($query, $organizationId)
     {

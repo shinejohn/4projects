@@ -2,6 +2,21 @@
 
 use Illuminate\Support\Str;
 
+// Parse DATABASE_URL if present (Railway provides this automatically)
+$databaseUrl = env('DATABASE_URL');
+$dbConfig = [];
+
+if ($databaseUrl) {
+    $parsedUrl = parse_url($databaseUrl);
+    $dbConfig = [
+        'host' => $parsedUrl['host'] ?? '127.0.0.1',
+        'port' => $parsedUrl['port'] ?? 5432,
+        'database' => ltrim($parsedUrl['path'] ?? '/forge', '/'),
+        'username' => $parsedUrl['user'] ?? 'forge',
+        'password' => $parsedUrl['pass'] ?? '',
+    ];
+}
+
 return [
 
     /*
@@ -16,7 +31,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', $databaseUrl ? 'pgsql' : 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -85,12 +100,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'url' => env('DATABASE_URL'),
+            'host' => $dbConfig['host'] ?? env('DB_HOST', '127.0.0.1'),
+            'port' => $dbConfig['port'] ?? env('DB_PORT', '5432'),
+            'database' => $dbConfig['database'] ?? env('DB_DATABASE', 'laravel'),
+            'username' => $dbConfig['username'] ?? env('DB_USERNAME', 'root'),
+            'password' => $dbConfig['password'] ?? env('DB_PASSWORD', ''),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
