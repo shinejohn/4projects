@@ -8,6 +8,8 @@ cmds = [
 
 [phases.build]
 cmds = [
+    "export VITE_API_URL=${VITE_API_URL:-https://api-web-production-cc91.up.railway.app/api}",
+    "echo 'Building with VITE_API_URL='$VITE_API_URL",
     "npm run build"
 ]
 
