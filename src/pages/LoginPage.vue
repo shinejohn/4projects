@@ -1,50 +1,33 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-      <div>
-        <div class="flex justify-center">
-          <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-            4P
-          </div>
-        </div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to Projects.ai
-        </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
-          Organize and manage your projects with ease
-        </p>
-      </div>
-      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <LoginForm
-          app-name="Projects.ai"
-          @success="handleSuccess"
-          @sign-up="handleSignUp"
-          @forgot-password="handleForgotPassword"
-        />
-      </div>
-    </div>
-  </div>
+  <LoginPageTemplate
+    app-name="Projects"
+    app-tagline="Project Delivery Hub"
+    :logo-icon="FolderKanban"
+    logo-gradient="bg-gradient-to-br from-emerald-500 to-teal-600 shadow-emerald-500/20"
+    tagline-color="text-emerald-400"
+    primary-glow="bg-emerald-500/10"
+    secondary-glow="bg-teal-500/10"
+    input-focus-color="focus:border-emerald-500"
+    button-gradient="bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30 hover:shadow-emerald-500/40"
+    link-color="text-emerald-400 hover:text-emerald-300"
+    sign-up-route="/register"
+    forgot-password-route="/forgot-password"
+    :on-submit="handleLogin"
+    :show-social-login="false"
+  />
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import LoginPageTemplate from '../../../shared-ui/src/templates/auth/LoginPageTemplate.vue'
+import { FolderKanban } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
-import LoginForm from '@/components/auth/LoginForm.vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const authStore = useAuthStore()
+const router = useRouter()
 
-function handleSuccess() {
-  // Update auth store with user data
-  authStore.fetchUser()
-  router.push({ name: 'projects' })
-}
-
-function handleSignUp() {
-  router.push({ name: 'register' })
-}
-
-function handleForgotPassword() {
-  router.push({ name: 'forgot-password' })
+async function handleLogin(email: string, password: string): Promise<void> {
+  await authStore.login({ email, password })
+  router.push('/app/projects')
 }
 </script>
